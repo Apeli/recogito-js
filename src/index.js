@@ -8,13 +8,13 @@ import {
   addPolyfills,
   createEnvironment,
   setLocale 
-} from '@recogito/recogito-client-core';
+} from 'recogito-client-core-fork';
 import TextAnnotator from './TextAnnotator';
 import { deflateHTML } from './utils';
 
 addPolyfills(); // Extra polyfills that babel doesn't include
 
-import '@recogito/recogito-client-core/themes/default';
+import 'recogito-client-core-fork/themes/default';
 
 /**
  * The entrypoint into the application. Provides the
@@ -26,11 +26,19 @@ export class Recogito {
     // API calls to this instance are forwarded through a ref
     this._app = React.createRef();
 
+    const localToken = localStorage.getItem("token");
+    this._jwtToken = null;
+    if (localToken) {
+      this._jwtToken = localToken.access_token;
+    }
+
     // Event handling via tiny-emitter
     this._emitter = new Emitter();
 
     // Environment settings container
     this._environment = createEnvironment();
+
+    // axios.get('/api/user/current_user', { headers: { Authorization: `Bearer ${token}` } })
 
     // The content element (which contains the text we want to annotate)
     // is wrapped in a DIV ('wrapperEl'). The application container DIV,
@@ -112,7 +120,7 @@ export class Recogito {
   /**
    * Loads JSON-LD WebAnnotations from the given URL.
    */
-  loadAnnotations = url => axios.get(url).then(response => {
+  loadAnnotations = url => axios.get(url, { headers: { Authorization: this._jwtToken } }).then(response => {
     const annotations = response.data.map(a => new WebAnnotation(a));
     this._app.current.setAnnotations(annotations);
     return annotations;

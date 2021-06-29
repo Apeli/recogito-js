@@ -5,7 +5,8 @@
       "type": "Annotation",
       "body": [{
         "type": "TextualBody",
-        "value": "This is a comment"
+        "value": "This is a comment",
+        "purpose": "commenting"
       }, {
         "type": "TextualBody",
         "value": "A Tag",

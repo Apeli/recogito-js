@@ -62,7 +62,7 @@ module.exports = {
     compress: true,
     hot: true,
     host: process.env.HOST || 'localhost',
-    port: 3000,
+    port: 9200,
     publicPath: '/'
   },
   plugins: [

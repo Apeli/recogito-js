@@ -5,7 +5,8 @@
   "main": "dist/recogito.min.js",
   "scripts": {
     "start": "webpack serve --open --mode=development",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "postinstall": "cd ./node_modules/recogito-client-core-fork && npm install && npm run test"
   },
   "repository": {
     "type": "git",
@@ -52,9 +53,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
-    "@recogito/recogito-client-core": "1.2.3",
     "axios": "^0.21.1",
     "preact": "^10.5.13",
+    "recogito-client-core-fork": "git+https://github.com/Apeli/recogito-client-core.git",
     "tiny-emitter": "^2.1.0"
   }
 }

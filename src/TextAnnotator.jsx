@@ -1,5 +1,5 @@
 import React, { Component } from 'preact/compat';
-import { Editor } from '@recogito/recogito-client-core';
+import { Editor } from 'recogito-client-core-fork';
 import Highlighter from './highlighter/Highlighter';
 import SelectionHandler from './selection/SelectionHandler';
 import RelationsLayer from './relations/RelationsLayer';
@@ -259,6 +259,7 @@ export default class TextAnnotator extends Component {
   }
 
   render() {
+
     const readOnly = this.props.config.readOnly || this.state.selectedAnnotation?.readOnly
 
     return (

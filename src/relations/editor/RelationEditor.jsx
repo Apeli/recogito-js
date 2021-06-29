@@ -1,6 +1,6 @@
 import React, { Component } from 'preact/compat';
-import { TrashIcon, CheckIcon } from '@recogito/recogito-client-core';
-import Autocomplete from '@recogito/recogito-client-core/src/editor/widgets/Autocomplete';
+import { TrashIcon, CheckIcon } from 'recogito-client-core-fork';
+import Autocomplete from 'recogito-client-core-fork/src/editor/widgets/Autocomplete';
 
 /**
  * Shorthand to get the label (= first tag body value) from the
@@ -46,7 +46,7 @@ export default class RelationEditor extends Component {
   
   onSubmit = () => {
     const value = this.element.current.querySelector('input').value;
-
+    console.log("VALUE", value);
     const updatedAnnotation = this.props.relation.annotation.clone({
       motivation: 'linking',
       body: [{

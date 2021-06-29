@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <title>RecogitoJS | Development</title>
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
     <style>
-      html, body {
+        html, body {
         padding:10px 20px;
         margin:0;
       }
@@ -26,112 +27,169 @@
         font-size:17px;
         line-height:27px;
       }
+
+      .r6o-annotation {
+          position: relative;
+      }
+
+      .mark-bubble {
+          position: absolute;
+          bottom: 110%;
+          background: #FFF;
+          display: inline-block;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #fff;
+          box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, .2);
+          padding: 10px 14px;
+          border-radius: 3px;
+          width: 300px;
+
+      }
+
+      .mark-bubble>div {
+          position: relative;
+          overflow: auto;
+          width: 100%;
+          height: 100%;
+          max-height: 300px;
+          white-space: pre-line;
+          font-size: 14px;
+          line-height: 1.4;
+      }
+
+      .mark-bubble:before {
+          content: " ";
+          border: 5px solid transparent;
+          border-top-color: #fff;
+          position: absolute;
+          left: 50%;
+          /*background: red;*/
+          bottom: 0;
+          transform: translate(-50%, 100%);
+      }
+            
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <div>
-      <button id="add-annotation">Add Annotation</button>
-      <button id="update-annotation">Update Annotation</button>
-      <button id="remove-annotation">Remove Annotation</button>
-      <button id="toggle-mode">MODE: ANNOTATION</button>
+        <button id="add-annotation">Add Annotation</button>
+        <button id="update-annotation">Update Annotation</button>
+        <button id="remove-annotation">Remove Annotation</button>
+        <button id="toggle-mode">MODE: ANNOTATION</button>
     </div>
-
     <div id="outer-container">
-      <div id="content" class="plaintext">
-        <h1>Homer: The Odyssey</h1>
-        <p>
-          <strong>Tell me, O muse,</strong> of that ingenious hero who travelled far and wide after he had sacked
-          the famous town of Troy. Many cities did he visit, and many were the nations with whose manners and customs
-          he was acquainted; moreover he suffered much by sea while trying to save his own life and bring his men safely
-          home; but do what he might he could not save his men, for they perished through their own sheer folly in eating
-          the cattle of the Sun-god Hyperion; so the god prevented them from ever reaching home. Tell me, too, about all
-          these things, O daughter of Jove, from whatsoever source you may know them.
-        </p>
-        <p>
-          <strong>So now all who escaped death in battle</strong> or by shipwreck had got safely home except Ulysses,
-          and he, though he was longing to return to his wife and country, was detained by the goddess Calypso, who
-          had got him into a large cave and wanted to marry him. But as years went by, there came a time when the gods
-          settled that he should go back to Ithaca; even then, however, when he was among his own people, his troubles
-          were not yet over; nevertheless all the gods had now begun to pity him except Neptune, who still persecuted
-          him without ceasing and would not let him get home.
-        </p>
-      </div>
+        <div id="content" class="plaintext">
+            <h1>Homer: The Odyssey</h1>
+            <p>
+                <strong>Tell me, O muse,</strong> of that ingenious hero who travelled far and wide after he had sacked
+                the famous town of Troy. Many cities did he visit, and many were the nations with whose manners and customs
+                he was acquainted; moreover he suffered much by sea while trying to save his own life and bring his men safely
+                home; but do what he might he could not save his men, for they perished through their own sheer folly in eating
+                the cattle of the Sun-god Hyperion; so the god prevented them from ever reaching home. Tell me, too, about all
+                these things, O daughter of Jove, from whatsoever source you may know them.
+            </p>
+            <p>
+                <strong>So now all who escaped death in battle</strong> or by shipwreck had got safely home except Ulysses,
+                and he, though he was longing to return to his wife and country, was detained by the goddess Calypso, who
+                had got him into a large cave and wanted to marry him. But as years went by, there came a time when the gods
+                settled that he should go back to Ithaca; even then, however, when he was among his own people, his troubles
+                were not yet over; nevertheless all the gods had now begun to pity him except Neptune, who still persecuted
+                him without ceasing and would not let him get home.
+            </p>
+        </div>
     </div>
-
     <script type="text/javascript">
-      // An example annotation we'll add/remove via JavaScript
-      var myAnnotation = {
+    // An example annotation we'll add/remove via JavaScript
+    var myAnnotation = {
         '@context': 'http://www.w3.org/ns/anno.jsonld',
         'id': 'https://www.example.com/recogito-js-example/foo',
         'type': 'Annotation',
         'body': [{
-          'type': 'TextualBody',
-          'value': 'This annotation was added via JS.'
+            'type': 'TextualBody',
+            'value': 'This annotation was added via JS.'
         }],
         'target': {
-          'selector': [{
-            'type': 'TextQuoteSelector',
-            'exact': 'that ingenious hero'
-          }, {
-            'type': 'TextPositionSelector',
-            'start': 38,
-            'end': 57
-          }]
+            'selector': [{
+                'type': 'TextQuoteSelector',
+                'exact': 'that ingenious hero'
+            }, {
+                'type': 'TextPositionSelector',
+                'start': 38,
+                'end': 57
+            }]
         }
-      };
+    };
 
-      (function() {
+    (function() {
         // Intialize Recogito
+        var formatter = function(annotation) {
+            let obj = { className: "", style: "" };
+            obj.className = (annotation.bodies.length > 1) ? "" : "";
+            obj.style = false;
+            const comment = (annotation.bodies.filter(b => b.type === 'TextualBody' && b.purpose === 'commenting'))
+            
+            if (comment.length) {
+                obj.comment = comment[0].value;
+            } else {
+                obj.comment = null;
+            }
+
+            return obj;
+        }
+
         var r = Recogito.init({
-          content: 'content', // Element id or DOM node to attach to
-          locale: 'auto',
-      	  widgets: [
-            { widget: 'COMMENT' },
-            { widget: 'TAG', vocabulary: [ 'Place', 'Person', 'Event', 'Organization', 'Animal' ] }
-          ],
-          relationVocabulary: [ 'isRelated', 'isPartOf', 'isSameAs ']
+            content: 'content', // Element id or DOM node to attach to
+            locale: 'fi',
+            formatter: formatter,
+            widgets: [
+                { widget: 'COMMENT' },
+                { widget: 'TAG', vocabulary: ['Place', 'Person', 'Event', 'Organization', 'Animal'] }
+            ],
+            relationVocabulary: ['isRelated', 'isPartOf', 'isSameAs ']
         });
 
         r.loadAnnotations('annotations.w3c.json');
 
         r.on('selectAnnotation', function(a) {
-          console.log('selected', a);
+            console.log('selected', a);
         });
 
         r.on('createAnnotation', function(a) {
-          console.log('created', a);
+            console.log('created', a);
         });
 
         r.on('updateAnnotation', function(annotation, previous) {
-          console.log('updated', previous, 'with', annotation);
+            console.log('updated', previous, 'with', annotation);
         });
 
         // Wire the Add/Update/Remove buttons
         document.getElementById('add-annotation').addEventListener('click', function() {
-          r.addAnnotation(myAnnotation);
+            r.addAnnotation(myAnnotation);
         });
 
         document.getElementById('update-annotation').addEventListener('click', function() {
-          r.addAnnotation(Object.assign({}, myAnnotation, {
-            'body': [{
-              'type': 'TextualBody',
-              'value': 'This annotation was added via JS, and has been updated now.'
-            }],
-            'target': {
-              'selector': [{
-                'type': 'TextQuoteSelector',
-                'exact': 'ingenious hero who'
-              }, {
-                'type': 'TextPositionSelector',
-                'start': 43,
-                'end': 61
-              }]
-            }
-          }));
+            r.addAnnotation(Object.assign({}, myAnnotation, {
+                'body': [{
+                    'type': 'TextualBody',
+                    'value': 'This annotation was added via JS, and has been updated now.'
+                }],
+                'target': {
+                    'selector': [{
+                        'type': 'TextQuoteSelector',
+                        'exact': 'ingenious hero who'
+                    }, {
+                        'type': 'TextPositionSelector',
+                        'start': 43,
+                        'end': 61
+                    }]
+                }
+            }));
         });
 
         document.getElementById('remove-annotation').addEventListener('click', function() {
-          r.removeAnnotation(myAnnotation);
+            r.removeAnnotation(myAnnotation);
         });
 
         // Switch annotation mode (annotation/relationships)
@@ -139,17 +197,18 @@
 
         var toggleModeBtn = document.getElementById('toggle-mode');
         toggleModeBtn.addEventListener('click', function() {
-          if (annotationMode === 'ANNOTATION') {
-            toggleModeBtn.innerHTML = 'MODE: RELATIONS';
-            annotationMode = 'RELATIONS';
-          } else  {
-            toggleModeBtn.innerHTML = 'MODE: ANNOTATION';
-            annotationMode = 'ANNOTATION';
-          }
+            if (annotationMode === 'ANNOTATION') {
+                toggleModeBtn.innerHTML = 'MODE: RELATIONS';
+                annotationMode = 'RELATIONS';
+            } else {
+                toggleModeBtn.innerHTML = 'MODE: ANNOTATION';
+                annotationMode = 'ANNOTATION';
+            }
 
-          r.setMode(annotationMode);
+            r.setMode(annotationMode);
         });
-      })();
+    })();
     </script>
-  </body>
+</body>
+
 </html>
