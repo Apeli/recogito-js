@@ -6,7 +6,6 @@
   "scripts": {
     "start": "webpack serve --open --mode=development",
     "build": "webpack --mode=production",
-    "postinstall": "cd ./node_modules/recogito-client-core-fork && npm install && npm run test"
   },
   "repository": {
     "type": "git",

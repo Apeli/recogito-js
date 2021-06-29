@@ -124,7 +124,7 @@ export default class Highlighter {
         const extraStyle = this.formatter ? this.formatter(annotation).style : '';
         const comment = this.formatter ? this.formatter(annotation).comment : false;
 
-        log("ex", extraClasses, extraStyle, comment);
+        console.log("ex", extraClasses, extraStyle, comment);
 
         spans.forEach(span => {
             span.style = extraStyle;
