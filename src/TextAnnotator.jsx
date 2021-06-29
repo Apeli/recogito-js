@@ -34,6 +34,9 @@ export default class TextAnnotator extends Component {
   }
 
   componentDidMount() {
+
+    console.log("Apeli fork");
+
     this.highlighter = new Highlighter(this.props.contentEl, this.props.config.formatter);
 
     this.selectionHandler = new SelectionHandler(this.props.contentEl, this.highlighter, this.props.config.readOnly);
