@@ -52,7 +52,7 @@ export default class SelectionHandler extends EventEmitter {
   }
 
   _onMouseUp = evt => {
-    if (this.isEnabled) {
+    if (this.isEnabled && !this.readOnly) {
       const selection = getSelection();
 
       if (selection.isCollapsed) {

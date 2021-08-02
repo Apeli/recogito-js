@@ -14,6 +14,8 @@ export default class Highlighter {
     init = annotations => new Promise((resolve, _) => {
         const startTime = performance.now();
 
+        console.log("annos", annotations);
+
         // Discard all annotations without a TextPositionSelector
         const highlights = annotations.filter(a => a.selector('TextPositionSelector'));
 
@@ -124,11 +126,12 @@ export default class Highlighter {
         const extraStyle = this.formatter ? this.formatter(annotation).style : '';
         const comment = this.formatter ? this.formatter(annotation).comment : false;
 
-        console.log("ex", extraClasses, extraStyle, comment);
+        console.log("Highlighter@applyStyles", extraClasses, extraStyle, comment);
 
         spans.forEach(span => {
             span.style = extraStyle;
             span.className = `r6o-annotation ${extraClasses}`.trim()
+            console.log("SPAN", span);
             if (comment) {
                 span.dataset.mark = comment;
                 span.addEventListener('mouseover', this.onHover)
@@ -143,7 +146,6 @@ export default class Highlighter {
     }
 
     onHover = (event) => {
-        console.log("hover", event);
         const target = event.target;
         if (target.tagName != "SPAN") return;
 

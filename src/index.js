@@ -29,7 +29,7 @@ export class Recogito {
     const localToken = localStorage.getItem("token");
     this._jwtToken = null;
     if (localToken) {
-      this._jwtToken = localToken.access_token;
+      this._jwtToken = JSON.parse(localToken).access_token;
     }
 
     // Event handling via tiny-emitter
@@ -120,7 +120,7 @@ export class Recogito {
   /**
    * Loads JSON-LD WebAnnotations from the given URL.
    */
-  loadAnnotations = url => axios.get(url, { headers: { Authorization: this._jwtToken } }).then(response => {
+  loadAnnotations = url => axios.get(url, { headers: { Authorization: "Bearer " + this._jwtToken } }).then(response => {
     const annotations = response.data.map(a => new WebAnnotation(a));
     this._app.current.setAnnotations(annotations);
     return annotations;
