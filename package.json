@@ -33,27 +33,27 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.14.3",
+    "@babel/core": "^7.15.0",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-env": "^7.15.0",
     "@babel/preset-react": "^7.13.13",
     "babel-loader": "^8.2.2",
-    "css-loader": "^5.2.4",
-    "glob-parent": ">=5.1.2",
+    "css-loader": "^5.2.7",
+    "glob-parent": "^6.0.1",
     "html-webpack-plugin": "^4.5.2",
-    "mini-css-extract-plugin": "^1.6.0",
+    "mini-css-extract-plugin": "^1.6.2",
     "node-sass": "^5.0.0",
-    "normalize-url": ">=4.5.1",
+    "normalize-url": "^7.0.1",
     "sass-loader": "^10.2.0",
     "terser-webpack-plugin": "^4.2.3",
     "webpack": "^4.46.0",
-    "webpack-cli": "^4.7.0",
+    "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
     "axios": "^0.21.1",
-    "preact": "^10.5.13",
+    "preact": "^10.5.14",
     "recogito-client-core-fork": "git+https://github.com/Apeli/recogito-client-core.git",
     "tiny-emitter": "^2.1.0"
   }
